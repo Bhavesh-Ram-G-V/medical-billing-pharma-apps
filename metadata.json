@@ -2,5 +2,7 @@
   "name": "Dr. Sarah Jenkins, MD - Clinical EHR & Practice Suite",
   "description": "Comprehensive Electronic Health Records (EHR) and clinical practice management system for Dr. Sarah Jenkins, MD, General Medicine.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

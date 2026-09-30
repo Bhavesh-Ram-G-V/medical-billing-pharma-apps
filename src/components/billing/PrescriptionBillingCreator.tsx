@@ -214,19 +214,19 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
   };
 
   return (
-    <div className="bg-slate-900 rounded-2xl border-2 border-teal-500/50 shadow-2xl p-5 sm:p-6 space-y-6 relative overflow-hidden">
+    <div className="w-full bg-slate-900 rounded-2xl border-2 border-teal-500/50 shadow-2xl p-5 sm:p-7 space-y-6 relative overflow-hidden">
       {/* Visual Accent Glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
 
       {/* Prominent Section Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800 pb-5 relative z-10">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800 pb-5 relative z-10 w-full">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-300 shadow-inner">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-300 shadow-inner">
               <Receipt className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5 flex-wrap">
                 <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
                   Prescription Billing Creator
                 </h2>
@@ -255,7 +255,7 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
                   if (onSelectPatient) onSelectPatient(found);
                 }
               }}
-              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-white font-semibold focus:outline-none focus:border-teal-500 text-xs"
+              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-white font-semibold focus:outline-none focus:border-teal-500 text-xs cursor-pointer"
             >
               {patients.map(p => (
                 <option key={p.id} value={p.id}>
@@ -274,7 +274,7 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
                 const found = INSURANCE_OPTIONS.find(i => i.id === e.target.value);
                 if (found) setSelectedInsurance(found);
               }}
-              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-teal-300 font-semibold focus:outline-none focus:border-teal-500 text-xs max-w-[200px] truncate"
+              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-teal-300 font-semibold focus:outline-none focus:border-teal-500 text-xs max-w-[220px] truncate cursor-pointer"
             >
               {INSURANCE_OPTIONS.map(ins => (
                 <option key={ins.id} value={ins.id}>
@@ -286,13 +286,13 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
         </div>
       </div>
 
-      {/* Main 2-Column Billing Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
-        {/* Left Column (5 Cols): Medication Search & Checkbox Selector List */}
-        <div className="lg:col-span-5 space-y-4">
+      {/* Main 2-Column Billing Workspace - Expanded Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 relative z-10 w-full items-start">
+        {/* Left Column (4 Cols): Medication Search & Checkbox Selector List */}
+        <div className="lg:col-span-4 xl:col-span-4 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <span>Select Medications</span>
+              <span>Rapid Medicine Selector</span>
               <span className="text-teal-400 font-mono">({selectedItems.length} selected)</span>
             </h3>
             {selectedItems.length > 0 && (
@@ -310,10 +310,10 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-teal-400" />
             <input
               type="text"
-              placeholder="Search by medicine name, strength, or condition (e.g. Amoxicillin, Metformin, Lisinopril)..."
+              placeholder="Search medicine (e.g. Amoxicillin, Metformin, Lisinopril)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 shadow-inner"
+              className="w-full pl-9 pr-8 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 shadow-inner"
             />
             {searchTerm && (
               <button
@@ -343,7 +343,7 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
           </div>
 
           {/* 2. Checkbox Selector List to Rapidly Add Common Medications */}
-          <div className="bg-slate-950 rounded-xl border border-slate-800 divide-y divide-slate-800/80 max-h-[380px] overflow-y-auto">
+          <div className="bg-slate-950 rounded-xl border border-slate-800 divide-y divide-slate-800/80 max-h-[420px] overflow-y-auto">
             {filteredCatalog.length === 0 ? (
               <div className="p-6 text-center text-xs text-slate-500">
                 No medications matched "{searchTerm}".
@@ -374,7 +374,7 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
                         <div className="font-bold text-xs text-white truncate">
                           {med.name} <span className="text-teal-300 font-mono font-normal">{med.dosage}</span>
                         </div>
-                        <span className="text-xs font-mono font-bold text-slate-300 shrink-0">
+                        <span className="text-xs font-mono font-bold text-slate-200 shrink-0">
                           ${med.retailPrice.toFixed(2)}
                         </span>
                       </div>
@@ -397,12 +397,12 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
           </div>
         </div>
 
-        {/* Right Column (7 Cols): Dynamic Checkout Table & Finalize Action */}
-        <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
+        {/* Right Column (8 Cols): Dynamic Checkout Table & Finalize Action */}
+        <div className="lg:col-span-8 xl:col-span-8 flex flex-col justify-between space-y-5">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                <span>Dynamic Checkout & Insurance Adjudication</span>
+                <span>Dynamic Insurance Checkout Adjudication</span>
                 <span className="text-slate-500 font-normal">|</span>
                 <span className="text-teal-400 text-xs font-normal">
                   Covered under {selectedInsurance.name}
@@ -411,39 +411,39 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
             </div>
 
             {/* 3. Dynamic Checkout Table */}
-            <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden shadow-inner">
+            <div className="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden shadow-inner w-full">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+                <table className="w-full text-left text-xs min-w-[620px]">
                   <thead className="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
                     <tr>
-                      <th className="py-2.5 px-3">Medicine & Strength</th>
-                      <th className="py-2.5 px-3">Dispense Qty</th>
-                      <th className="py-2.5 px-3 text-right">Retail Cost</th>
-                      <th className="py-2.5 px-3 text-right text-emerald-400">Ins. Reduction</th>
-                      <th className="py-2.5 px-3 text-right text-teal-300 font-bold">Patient Copay</th>
-                      <th className="py-2.5 px-2 text-center w-8"></th>
+                      <th className="py-3 px-4">Medicine & Strength</th>
+                      <th className="py-3 px-3">Dispense Qty</th>
+                      <th className="py-3 px-4 text-right">Retail Cost</th>
+                      <th className="py-3 px-4 text-right text-emerald-400">Insurance Reduction</th>
+                      <th className="py-3 px-4 text-right text-teal-300 font-bold">Patient Out-Of-Pocket</th>
+                      <th className="py-3 px-3 text-center w-10"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/80">
                     {billingCalculations.lineCalculations.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="py-10 text-center text-slate-500 text-xs">
+                        <td colSpan={6} className="py-12 text-center text-slate-500 text-xs">
                           No medications selected. Check boxes from the list on the left to add items to this prescription bill.
                         </td>
                       </tr>
                     ) : (
                       billingCalculations.lineCalculations.map((item) => (
-                        <tr key={item.medication.id} className="hover:bg-slate-900/40 transition-colors">
-                          <td className="py-3 px-3">
+                        <tr key={item.medication.id} className="hover:bg-slate-900/50 transition-colors">
+                          <td className="py-3.5 px-4">
                             <div className="font-bold text-white text-xs">
                               {item.medication.name}
                             </div>
-                            <div className="text-[10px] text-slate-400">
+                            <div className="text-[11px] text-slate-400">
                               {item.medication.dosage} · {item.medication.form}
                             </div>
                           </td>
 
-                          <td className="py-3 px-3">
+                          <td className="py-3.5 px-3">
                             <div className="flex items-center gap-1.5">
                               <input
                                 type="number"
@@ -451,34 +451,34 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
                                 max={360}
                                 value={item.quantity}
                                 onChange={(e) => handleUpdateQuantity(item.medication.id, Number(e.target.value))}
-                                className="w-16 bg-slate-900 border border-slate-700 rounded p-1 text-center text-xs text-white font-mono focus:outline-none focus:border-teal-500"
+                                className="w-16 bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-white font-mono focus:outline-none focus:border-teal-500"
                               />
                               <span className="text-[10px] text-slate-500">units</span>
                             </div>
                           </td>
 
                           {/* Retail Cost */}
-                          <td className="py-3 px-3 text-right font-mono font-medium text-slate-300 tabular-nums">
+                          <td className="py-3.5 px-4 text-right font-mono font-medium text-slate-200 tabular-nums">
                             ${item.lineRetail.toFixed(2)}
                           </td>
 
                           {/* Insurance Reduction Amount */}
-                          <td className="py-3 px-3 text-right font-mono font-semibold text-emerald-400 tabular-nums">
+                          <td className="py-3.5 px-4 text-right font-mono font-bold text-emerald-400 tabular-nums">
                             -${item.lineReduction.toFixed(2)}
                           </td>
 
                           {/* Final Patient Out-Of-Pocket */}
-                          <td className="py-3 px-3 text-right font-mono font-bold text-white tabular-nums">
+                          <td className="py-3.5 px-4 text-right font-mono font-extrabold text-white text-sm tabular-nums">
                             ${item.lineOutOfPocket.toFixed(2)}
                           </td>
 
-                          <td className="py-3 px-2 text-center">
+                          <td className="py-3.5 px-3 text-center">
                             <button
                               onClick={() => handleToggleMedication(item.medication)}
-                              className="text-slate-500 hover:text-red-400 transition-colors p-1"
+                              className="text-slate-500 hover:text-red-400 transition-colors p-1.5 rounded hover:bg-slate-800"
                               title="Remove item"
                             >
-                              <Trash2 className="w-3.5 h-3.5" />
+                              <Trash2 className="w-4 h-4" />
                             </button>
                           </td>
                         </tr>
@@ -490,22 +490,22 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
 
               {/* Subtotal Financial Breakdown Bar */}
               {selectedItems.length > 0 && (
-                <div className="bg-slate-900/60 p-3.5 border-t border-slate-800 grid grid-cols-3 gap-2 text-xs text-center font-mono">
-                  <div className="border-r border-slate-800 pr-2">
-                    <span className="text-[10px] text-slate-400 uppercase font-sans block">Total Retail</span>
-                    <span className="font-bold text-slate-200 tabular-nums text-sm">
+                <div className="bg-slate-900/60 p-4 border-t border-slate-800 grid grid-cols-3 gap-4 text-xs text-center font-mono">
+                  <div className="border-r border-slate-800 pr-3">
+                    <span className="text-[10px] text-slate-400 uppercase font-sans block mb-0.5">Total Pharmacy Retail</span>
+                    <span className="font-bold text-slate-200 tabular-nums text-sm sm:text-base">
                       ${billingCalculations.totalRetail.toFixed(2)}
                     </span>
                   </div>
-                  <div className="border-r border-slate-800 pr-2">
-                    <span className="text-[10px] text-emerald-400 uppercase font-sans block">Insurance Covered</span>
-                    <span className="font-bold text-emerald-400 tabular-nums text-sm">
+                  <div className="border-r border-slate-800 pr-3">
+                    <span className="text-[10px] text-emerald-400 uppercase font-sans block mb-0.5">Total Insurance Reduction</span>
+                    <span className="font-bold text-emerald-400 tabular-nums text-sm sm:text-base">
                       -${billingCalculations.totalReduction.toFixed(2)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-teal-400 uppercase font-sans block">Effective Savings</span>
-                    <span className="font-bold text-teal-300 tabular-nums text-sm">
+                    <span className="text-[10px] text-teal-400 uppercase font-sans block mb-0.5">Effective Copay Discount</span>
+                    <span className="font-bold text-teal-300 tabular-nums text-sm sm:text-base">
                       {billingCalculations.totalRetail > 0
                         ? Math.round((billingCalculations.totalReduction / billingCalculations.totalRetail) * 100)
                         : 0}%
@@ -517,11 +517,11 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
           </div>
 
           {/* 4. Prominent Out-Of-Pocket Total & Obvious Finalize Action Button Right Next To It */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950/60 border-2 border-teal-500/60 shadow-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-teal-950/70 border-2 border-teal-500/60 shadow-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 w-full">
             {/* Out-Of-Pocket Total Display */}
             <div>
               <div className="text-[11px] uppercase font-bold tracking-wider text-teal-300 flex items-center gap-1.5">
-                <DollarSign className="w-3.5 h-3.5 text-teal-400" />
+                <DollarSign className="w-4 h-4 text-teal-400" />
                 <span>Final Patient Out-Of-Pocket Total</span>
               </div>
               <div className="text-3xl sm:text-4xl font-black text-white font-mono tabular-nums tracking-tight mt-0.5">
@@ -531,7 +531,7 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
                 </span>
               </div>
               <div className="text-[11px] text-slate-400 mt-0.5">
-                Calculated for <strong className="text-white">{targetPatient.firstName} {targetPatient.lastName}</strong> · {selectedInsurance.planType}
+                Calculated for <strong className="text-white">{targetPatient.firstName} {targetPatient.lastName}</strong> ({targetPatient.mrn}) · {selectedInsurance.planType}
               </div>
             </div>
 
@@ -540,7 +540,7 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
               <button
                 disabled={selectedItems.length === 0}
                 onClick={handleFinalizeAndSend}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 shadow-xl hover:shadow-teal-500/25 transition-all transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full md:w-auto px-7 py-4 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 shadow-xl hover:shadow-teal-500/30 transition-all transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <Send className="w-4 h-4 text-slate-950" />
                 <span>Finalize & Send Bill to Patient Portal</span>

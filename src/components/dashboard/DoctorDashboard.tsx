@@ -68,7 +68,7 @@ export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
   const completedCount = todayAppointments.filter(a => a.status === 'completed').length;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 w-full space-y-6">
       {/* Clinician Welcome Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950/40 rounded-xl border border-slate-800 p-6 shadow-lg relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -96,18 +96,10 @@ export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <a
-              href="#prescription-billing-creator"
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-teal-950/80 hover:bg-teal-900/80 border border-teal-500/40 text-teal-300 text-xs font-bold transition-all shadow-sm"
-            >
-              <Receipt className="w-3.5 h-3.5 text-teal-400" />
-              <span>Prescription Billing Creator</span>
-            </a>
-
+          <div className="flex items-center gap-2.5">
             <button
               onClick={onOpenNewApptModal}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold shadow transition-colors"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold shadow-md transition-colors"
             >
               <Plus className="w-4 h-4" />
               <span>Add Walk-In / Triage</span>
