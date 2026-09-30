@@ -11,7 +11,8 @@ import {
   CheckCircle2, 
   Clock, 
   AlertTriangle,
-  Stethoscope
+  Stethoscope,
+  Receipt
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -68,6 +69,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <span className="px-1.5 py-0.5 text-[10px] rounded bg-slate-800 text-slate-400 font-mono">
               {appointments.filter(a => a.date === 'Today').length}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('billing')}
+            className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+              activeTab === 'billing'
+                ? 'bg-gradient-to-r from-teal-500/25 to-emerald-500/25 text-white border border-teal-400/50 shadow-sm'
+                : 'hover:bg-slate-800/60 text-teal-300'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Receipt className="w-4 h-4 text-emerald-400" />
+              <span>Prescription Billing</span>
+            </div>
+            <span className="text-[10px] font-mono bg-teal-950 text-teal-300 border border-teal-700/40 px-1 rounded">
+              Creator
             </span>
           </button>
 

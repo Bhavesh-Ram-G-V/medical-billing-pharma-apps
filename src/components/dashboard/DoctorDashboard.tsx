@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Appointment, Patient } from '../../types/clinical';
 import { DOCTOR_PROFILE } from '../../data/mockClinicalData';
+import { PrescriptionBillingCreator } from '../billing/PrescriptionBillingCreator';
 import { 
   Clock, 
   Calendar, 
@@ -14,12 +15,15 @@ import {
   Search,
   Activity,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Receipt
 } from 'lucide-react';
 
 interface DoctorDashboardProps {
   appointments: Appointment[];
   patients: Patient[];
+  activePatient: Patient;
+  onSelectPatient: (patient: Patient) => void;
   onSelectPatientAndOpenChart: (patient: Patient) => void;
   onSelectPatientAndOpenTablet: (patient: Patient) => void;
   onStartTelehealth: (patient: Patient) => void;
@@ -30,6 +34,8 @@ interface DoctorDashboardProps {
 export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
   appointments,
   patients,
+  activePatient,
+  onSelectPatient,
   onSelectPatientAndOpenChart,
   onSelectPatientAndOpenTablet,
   onStartTelehealth,
@@ -38,6 +44,7 @@ export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
 }) => {
   const [filter, setFilter] = useState<'all' | 'checked-in' | 'in-exam-room' | 'telehealth' | 'completed'>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showBillingSection, setShowBillingSection] = useState(true);
 
   const todayAppointments = appointments.filter(a => a.date === 'Today');
 
@@ -89,7 +96,15 @@ export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <a
+              href="#prescription-billing-creator"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-teal-950/80 hover:bg-teal-900/80 border border-teal-500/40 text-teal-300 text-xs font-bold transition-all shadow-sm"
+            >
+              <Receipt className="w-3.5 h-3.5 text-teal-400" />
+              <span>Prescription Billing Creator</span>
+            </a>
+
             <button
               onClick={onOpenNewApptModal}
               className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold shadow transition-colors"
@@ -155,6 +170,15 @@ export const DoctorDashboard: React.FC<DoctorDashboardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Prominent, Highly Visible Section: Prescription Billing Creator */}
+      <section id="prescription-billing-creator" className="scroll-mt-20">
+        <PrescriptionBillingCreator
+          patients={patients}
+          activePatient={activePatient}
+          onSelectPatient={onSelectPatient}
+        />
+      </section>
 
       {/* Main Clinical Schedule Area */}
       <div className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-sm">

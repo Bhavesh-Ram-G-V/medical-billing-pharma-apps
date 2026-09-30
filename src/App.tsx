@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { Navbar, ActiveTab } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { DoctorDashboard } from './components/dashboard/DoctorDashboard';
+import { PrescriptionBillingCreator } from './components/billing/PrescriptionBillingCreator';
 import { ActiveEncounterChart } from './components/emr/ActiveEncounterChart';
 import { ClinicalTabletView } from './components/tablet/ClinicalTabletView';
 import { DiagnosticLabsView } from './components/labs/DiagnosticLabsView';
@@ -22,7 +23,7 @@ import {
   DOCTOR_PROFILE
 } from './data/mockClinicalData';
 import { Patient, Appointment, SOAPNote, LabPanel, Medication, Diagnosis } from './types/clinical';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, CheckCircle2 } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
@@ -33,6 +34,7 @@ export default function App() {
   const [labPanels, setLabPanels] = useState<LabPanel[]>(INITIAL_LAB_PANELS);
   const [isDoctorModalOpen, setIsDoctorModalOpen] = useState(false);
   const [isNewApptModalOpen, setIsNewApptModalOpen] = useState(false);
+  const [billingToast, setBillingToast] = useState<string | null>(null);
 
   // New triage appointment form
   const [triagePatientId, setTriagePatientId] = useState(INITIAL_PATIENTS[0].id);
@@ -136,6 +138,13 @@ export default function App() {
     setAppointments(prev => [newAppt, ...prev]);
   };
 
+  const handleSendBillToPortal = (billingSummary: any) => {
+    setBillingToast(`Statement #${billingSummary.billId} ($${billingSummary.finalOutOfPocket.toFixed(2)}) dispatched to ${billingSummary.patient.firstName}'s Portal.`);
+    setTimeout(() => {
+      setBillingToast(null);
+    }, 6000);
+  };
+
   const handleCreateTriageAppt = (e: React.FormEvent) => {
     e.preventDefault();
     const pt = patients.find(p => p.id === triagePatientId) || patients[0];
@@ -172,6 +181,15 @@ export default function App() {
         patientQueueCount={appointments.filter(a => a.date === 'Today' && a.status !== 'completed').length}
       />
 
+      {/* Real-time Dispatch Toast */}
+      {billingToast && (
+        <div className="fixed bottom-6 right-6 z-50 bg-teal-900 border-2 border-teal-400 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-semibold animate-bounce">
+          <CheckCircle2 className="w-5 h-5 text-teal-300" />
+          <span>{billingToast}</span>
+          <button onClick={() => setBillingToast(null)} className="ml-2 text-teal-200 hover:text-white">✕</button>
+        </div>
+      )}
+
       {/* Main Workspace Frame */}
       <div className="flex-1 flex overflow-hidden">
         {/* Persistent Doctor's Workstation Sidebar on Desktop (hidden in public portal and full tablet focus) */}
@@ -194,12 +212,25 @@ export default function App() {
             <DoctorDashboard
               appointments={appointments}
               patients={patients}
+              activePatient={activePatient}
+              onSelectPatient={handleSelectPatient}
               onSelectPatientAndOpenChart={handleSelectPatientAndOpenChart}
               onSelectPatientAndOpenTablet={handleSelectPatientAndOpenTablet}
               onStartTelehealth={handleStartTelehealth}
               onUpdateAppointmentStatus={handleUpdateAppointmentStatus}
               onOpenNewApptModal={() => setIsNewApptModalOpen(true)}
             />
+          )}
+
+          {activeTab === 'billing' && (
+            <div className="p-6 max-w-7xl mx-auto space-y-6">
+              <PrescriptionBillingCreator
+                patients={patients}
+                activePatient={activePatient}
+                onSelectPatient={handleSelectPatient}
+                onSendBillToPortal={handleSendBillToPortal}
+              />
+            </div>
           )}
 
           {activeTab === 'chart' && (
@@ -365,3 +396,4 @@ export default function App() {
     </div>
   );
 }
+

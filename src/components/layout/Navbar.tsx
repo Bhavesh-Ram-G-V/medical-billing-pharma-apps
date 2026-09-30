@@ -1,8 +1,8 @@
 import React from 'react';
 import { DOCTOR_PROFILE } from '../../data/mockClinicalData';
-import { Stethoscope, Calendar, FileText, Tablet, Activity, Video, Users, Building, ShieldCheck } from 'lucide-react';
+import { Stethoscope, Calendar, FileText, Tablet, Activity, Video, Users, Building, ShieldCheck, Receipt } from 'lucide-react';
 
-export type ActiveTab = 'dashboard' | 'chart' | 'tablet' | 'labs' | 'telehealth' | 'patients' | 'portal';
+export type ActiveTab = 'dashboard' | 'billing' | 'chart' | 'tablet' | 'labs' | 'telehealth' | 'patients' | 'portal';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -55,6 +55,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {patientQueueCount}
               </span>
             )}
+          </button>
+
+          <button
+            onClick={() => setActiveTab('billing')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all whitespace-nowrap ${
+              activeTab === 'billing'
+                ? 'bg-gradient-to-r from-teal-500 to-emerald-500 text-slate-950 shadow-md font-extrabold'
+                : 'text-teal-300 hover:text-white hover:bg-teal-950/40 border border-teal-500/30'
+            }`}
+          >
+            <Receipt className="w-3.5 h-3.5" />
+            <span>Prescription Billing</span>
           </button>
 
           <button
@@ -166,6 +178,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           Schedule ({patientQueueCount})
         </button>
         <button
+          onClick={() => setActiveTab('billing')}
+          className={`px-3 py-1 rounded whitespace-nowrap font-bold ${activeTab === 'billing' ? 'bg-teal-500 text-slate-950' : 'text-teal-300 border border-teal-500/30'}`}
+        >
+          Rx Billing Creator
+        </button>
+        <button
           onClick={() => setActiveTab('chart')}
           className={`px-3 py-1 rounded whitespace-nowrap ${activeTab === 'chart' ? 'bg-teal-600 text-white' : 'text-slate-400'}`}
         >
@@ -205,3 +223,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
+
