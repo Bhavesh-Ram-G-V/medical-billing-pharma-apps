@@ -7,6 +7,7 @@ import {
 } from '../../data/mockMedicationCatalog';
 import { Patient } from '../../types/clinical';
 import { DOCTOR_PROFILE } from '../../data/mockClinicalData';
+import { generateInvoicePDF } from '../../utils/generateInvoicePDF';
 import { 
   Receipt, 
   Search, 
@@ -23,7 +24,8 @@ import {
   Printer, 
   Sparkles, 
   Building2,
-  ChevronDown
+  ChevronDown,
+  FileDown
 } from 'lucide-react';
 
 export interface SelectedBillingItem {
@@ -535,12 +537,34 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
               </div>
             </div>
 
-            {/* 5. Obvious "Finalize & Send Bill to Patient Portal" Action Button */}
-            <div className="shrink-0 flex items-center">
+            {/* 5. Obvious "Finalize & Send Bill to Patient Portal" & "Download PDF Receipt" Action Buttons */}
+            <div className="shrink-0 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                disabled={selectedItems.length === 0}
+                onClick={() => {
+                  const currentBillId = confirmedBill?.billId || `BILL-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
+                  generateInvoicePDF({
+                    billId: currentBillId,
+                    patient: targetPatient,
+                    items: selectedItems,
+                    totalRetail: billingCalculations.totalRetail,
+                    totalReduction: billingCalculations.totalReduction,
+                    finalOutOfPocket: billingCalculations.finalOutOfPocket,
+                    insurancePlan: selectedInsurance
+                  });
+                }}
+                className="px-5 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-teal-300 hover:text-white border-2 border-teal-500/50 font-bold text-xs flex items-center justify-center gap-2 shadow-lg hover:shadow-teal-500/20 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Generate printer-friendly PDF clinical invoice document"
+              >
+                <FileDown className="w-4 h-4 text-teal-400" />
+                <span>Download PDF Receipt</span>
+              </button>
+
               <button
                 disabled={selectedItems.length === 0}
                 onClick={handleFinalizeAndSend}
-                className="w-full md:w-auto px-7 py-4 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 shadow-xl hover:shadow-teal-500/30 transition-all transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="px-7 py-4 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-sm flex items-center justify-center gap-2.5 shadow-xl hover:shadow-teal-500/30 transition-all transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <Send className="w-4 h-4 text-slate-950" />
                 <span>Finalize & Send Bill to Patient Portal</span>
@@ -606,17 +630,40 @@ export const PrescriptionBillingCreator: React.FC<PrescriptionBillingCreatorProp
               </span>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
+            <div className="flex flex-wrap items-center justify-end gap-2.5 pt-2">
               <button
+                type="button"
+                onClick={() => {
+                  generateInvoicePDF({
+                    billId: confirmedBill.billId,
+                    patient: targetPatient,
+                    items: selectedItems,
+                    totalRetail: confirmedBill.totalRetail,
+                    totalReduction: confirmedBill.totalReduction,
+                    finalOutOfPocket: confirmedBill.finalOutOfPocket,
+                    insurancePlan: selectedInsurance,
+                    dateStr: confirmedBill.timestamp
+                  });
+                }}
+                className="px-3.5 py-2 rounded-lg bg-teal-950/80 hover:bg-teal-900 border border-teal-500/50 text-teal-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow"
+              >
+                <FileDown className="w-3.5 h-3.5 text-teal-400" />
+                <span>Download PDF Receipt</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => {
                   window.print();
                 }}
                 className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Print Rx Bill Receipt</span>
+                <span>Print</span>
               </button>
+
               <button
+                type="button"
                 onClick={() => setConfirmedBill(null)}
                 className="px-5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shadow"
               >
